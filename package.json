@@ -6,12 +6,14 @@
   "author": "David Garner",
   "license": "MIT",
   "scripts": {
-    "start": "mdx-deck slides.mdx"
+    "start": "mdx-deck slides.mdx",
+    "build": "mdx-deck build slides.mdx",
+    "deploy": "gh-pages -d public"
   },
   "dependencies": {
     "@mdx-deck/themes": "^4.1.0",
+    "gh-pages": "^3.1.0",
     "mdx-deck": "^4.1.1",
-    "prism-react-renderer": "^1.1.1",
-    "react-syntax-highlighter": "^12.2.1"
+    "prism-react-renderer": "^1.1.1"
   }
 }
