@@ -1,8 +1,8 @@
-import yTho from './ytho.jpg';
-import heaviest from './heaviest.png';
-import deno from './what-is-deno.jpg';
+import yTho from "./ytho.jpg";
+import heaviest from "./heaviest.png";
+import deno from "./what-is-deno.jpg";
 
-import myTheme, { Attribution } from './theme.jsx';
+import myTheme, { Attribution } from "./theme.jsx";
 export const theme = myTheme;
 
 # Deno
@@ -11,7 +11,7 @@ export const theme = myTheme;
 
 <Attribution>
 
-  Image: https://blog.logrocket.com/what-is-deno
+Image: https://blog.logrocket.com/what-is-deno
 
 </Attribution>
 
@@ -25,11 +25,11 @@ export const theme = myTheme;
 
 <Notes>
 
-  - [A new JS runtime] Supports servers & scripts. Aims to do some of the things
+- [A new JS runtime] Supports servers & scripts. Aims to do some of the things
   that have been written in Python and Bash, but were made cumbersom by Node
   modules approach.
 
-  - N.B. this talk is mostly covering the Deno docs, and the talk that the
+- N.B. this talk is mostly covering the Deno docs, and the talk that the
   creator gave on his biggest regrets on Node.
 
 </Notes>
@@ -48,8 +48,8 @@ export const theme = myTheme;
 
 <Notes>
 
-  - v8 is fast
-  - Lots of concurrent connections, even in a single thread
+- v8 is fast
+- Lots of concurrent connections, even in a single thread
 
 </Notes>
 
@@ -64,9 +64,9 @@ export const theme = myTheme;
 
 <Notes>
 
-  - npm. Loads of packages.
-  - Easy to write, use, adopt, share. This has made JS the standard choice across the industry for web development.
-  - Isomorphic. We can write and share Client and server-side JS.
+- npm. Loads of packages.
+- Easy to write, use, adopt, share. This has made JS the standard choice across the industry for web development.
+- Isomorphic. We can write and share Client and server-side JS.
 
 </Notes>
 
@@ -80,9 +80,9 @@ export const theme = myTheme;
 
 <Notes>
 
-  - Just JS. Aims to be as consistent w/ browser JS as possible.
-  - Similar architecture as Node. v8 Event loop, I/O, single thread.
-  - You can integrate it with faster native tools if you need to, although the process is different.
+- Just JS. Aims to be as consistent w/ browser JS as possible.
+- Similar architecture as Node. v8 Event loop, I/O, single thread.
+- You can integrate it with faster native tools if you need to, although the process is different.
 
 </Notes>
 
@@ -105,9 +105,9 @@ $ deno run --allow-net ./hello_world.ts
 
 <Notes>
 
-  - Similar to how it was.
-  - There's a few things that maybe an eagle-eyed dev can pick up in this example.
-  - Let's go through them.
+- Similar to how it was.
+- There's a few things that maybe an eagle-eyed dev can pick up in this example.
+- Let's go through them.
 
 </Notes>
 
@@ -125,10 +125,10 @@ $ deno run --allow-net ./hello_world.ts
 
 <Notes>
 
-  - You cannot expect any package on npm to still work.
-  - Also, npm is, well, a privately-controlled repository that exerts a huge influence on the Open-Source ecosystem.
-  - Watch a talk I'll link you to by CJ, the former NPM CTO.
-  - Also, left-pad lol
+- You cannot expect any package on npm to still work.
+- Also, npm is, well, a privately-controlled repository that exerts a huge influence on the Open-Source ecosystem.
+- Watch a talk I'll link you to by CJ, the former NPM CTO.
+- Also, left-pad lol
 
 </Notes>
 
@@ -153,7 +153,7 @@ $ deno run --allow-net ./hello_world.ts
 
 ```js
 // A file executed in Node.js
-require('mymodule')  // Where is 'mymodule'?
+require("mymodule"); // Where is 'mymodule'?
 ```
 
 ```json
@@ -190,6 +190,7 @@ import liltest from "https://unpkg.com/liltest@0.0.5/dist/liltest.js";
 ## Deno does not use package.json
 
 ### Common pattern: export files from `./deps.ts`
+
 ```ts
 // deps.ts
 export {
@@ -210,7 +211,7 @@ export {
 
 <Notes>
 
-  Can be helpful, but really, we just need `dependencies`
+Can be helpful, but really, we just need `dependencies`
 
 </Notes>
 
@@ -225,8 +226,8 @@ export {
 
 <Notes>
 
-  - Ryan Dahl believes that this is an unnecessary divergence from browser behaviour
-  - Keep it like Browser.
+- Ryan Dahl believes that this is an unnecessary divergence from browser behaviour
+- Keep it like Browser.
 
 </Notes>
 
@@ -271,11 +272,11 @@ $ du -h -d0 */node_modules
 
 <Notes>
 
-  - What?! Who source-controls a modules directory?
-  - Well, there's a school-of-thought that if you're pulling your deps in at production time, you're doing it wrong.
-  - I mean, for Docker prod images, we bundle these in.
-  - It's certainly more secure.
-  - Is deno_dir just a renamed `node_modules`?
+- What?! Who source-controls a modules directory?
+- Well, there's a school-of-thought that if you're pulling your deps in at production time, you're doing it wrong.
+- I mean, for Docker prod images, we bundle these in.
+- It's certainly more secure.
+- Is deno_dir just a renamed `node_modules`?
 
 </Notes>
 
@@ -305,11 +306,11 @@ for await (const request of server) {
 
 <Notes>
 
-  - All system calls are done by message passing
-    - A single entrypoint in and out of the VM
-    - protobuf serialization
-    - Two fns: send and recv.
-  - I'll admit this is a bit out of my experience, but hey, the less need to write C++ the better.
+- All system calls are done by message passing
+  - A single entrypoint in and out of the VM
+  - protobuf serialization
+  - Two fns: send and recv.
+- I'll admit this is a bit out of my experience, but hey, the less need to write C++ the better.
 
 </Notes>
 
@@ -325,9 +326,9 @@ $ deno run -c tsconfig.json mod.ts
 
 <Notes>
 
-  - Appears to be a design decision of Deno to not do "magic things"
-  - if you need something, Deno won't find it for you;
-  - You have to say where it is.
+- Appears to be a design decision of Deno to not do "magic things"
+- if you need something, Deno won't find it for you;
+- You have to say where it is.
 
 </Notes>
 
@@ -369,14 +370,14 @@ https://deno.land/std
 - Always dies on uncaught errors
 - Uses ES Modules everywhere - no more `require()`
 
-<Note>
+<Notes>
 
-  - Also, `window` for global.
-  - It was and is a dumb name, but `global` in Node was a bad choice because we now don't have browser-compatibilty.
+- Also, `window` for global.
+- It was and is a dumb name, but `global` in Node was a bad choice because we now don't have browser-compatibilty.
 
-</Note>
+</Notes>
 
---------
+---
 
 ## Ideas for script projects
 
@@ -388,13 +389,13 @@ https://deno.land/std
 1. Shame bell?
 1. `¯\_(ツ)_/¯`
 
----------
+---
 
 ## Things to watch
 
 - "10 things I regret about Node.js" by Ryan Dahl https://www.youtube.com/watch?v=M3BM9TB-8yA
 - "The Economics of Open Source" by CJ Silverio https://www.youtube.com/watch?v=MO8hZlgK5zc
 
----------
+---
 
 ## 🍻
