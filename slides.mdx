@@ -1,0 +1,135 @@
+import { future } from "@mdx-deck/themes";
+export const theme = future;
+
+import yTho from './ytho.jpg';
+import heaviest from './heaviest.png';
+
+
+
+# Deno
+
+<Notes>
+
+</Notes>
+
+---
+
+## Deno is...
+
+- A new JS runtime (v1.0 released in May)
+- Made by the creator of Node.js, Ryan Dahl
+- Designed to address some of the shortcomings of Node
+
+<Notes>
+
+  - [A new JS runtime] Supports servers & scripts. Aims to do some of the things
+  that have been written in Python and Bash, but were made cumbersom by Node
+  modules approach.
+
+</Notes>
+
+---
+
+## Let's talk about Node
+
+- Came out ~2009
+- Designed for server-side JavaScript
+- Single threaded, Event loop, Non-blocking I/O
+
+<Notes>
+
+  - v8 is fast
+
+</Notes>
+
+---
+
+
+## What does Deno do the same?
+
+- Built on v8
+- Single threaded, Event loop, Non-blocking I/O
+
+
+---
+
+<img src={yTho} />
+
+---
+
+## Deno does not use npm
+## Deno does not have node_modules
+
+- modules referenced as URLs or file paths
+
+---
+
+
+- modules referenced as URLs or file paths
+
+<Notes>
+  Is deno_dir just a renamed `node_modules`?
+</Notes>
+
+---
+
+## Deno does not use package.json
+
+- Y tho
+
+---
+
+## All async actions in Deno return a promise
+- No more cb hell. Thus Deno provides different APIs than Node.
+
+---
+
+## Deno is secure by default
+- Requires explicit permissions for file, network, and environment access.
+
+---
+
+## All modules are imported by URLs
+
+```js
+import * as log from "https://deno.land/std/log/mod.ts";
+```
+
+---
+
+## TypeScript supported by default
+
+- Put in a `tsconfig.json`, tell Deno where it is, and you're good to go
+
+```bash
+$ deno run -c tsconfig.json mod.ts
+```
+
+<Notes>
+
+  - Appears to be a design decision of Deno to not do "magic things"
+  - if you need something, Deno won't find it for you;
+  - You have to say where it is.
+
+</Notes>
+
+---
+
+## Other nice things
+
+- Single executable.
+- Top-level await.
+- Always dies on uncaught errors.
+- Uses ES Modules and does not support require()
+
+
+-------
+
+## Let's talk about vendoring
+
+----
+
+# Node.js approach:
+- Source-control specification for dependencies
+- Let the build tool `npm` resolve them
+-
