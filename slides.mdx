@@ -1,16 +1,19 @@
-import { future } from "@mdx-deck/themes";
-export const theme = future;
-
 import yTho from './ytho.jpg';
 import heaviest from './heaviest.png';
+import deno from './what-is-deno.jpg';
 
-
+import myTheme, { Attribution } from './theme.jsx';
+export const theme = myTheme;
 
 # Deno
 
-<Notes>
+<img src={deno} style={{ marginBottom: 100 }} />
 
-</Notes>
+<Attribution>
+
+  Image: https://blog.logrocket.com/what-is-deno
+
+</Attribution>
 
 ---
 
@@ -26,30 +29,10 @@ import heaviest from './heaviest.png';
   that have been written in Python and Bash, but were made cumbersom by Node
   modules approach.
 
-</Notes>
-
----
-
-## Let's talk about Node
-
-- Came out ~2009
-- Designed for server-side JavaScript
-- Single threaded, Event loop, Non-blocking I/O
-
-<Notes>
-
-  - v8 is fast
+  - N.B. this talk is mostly covering the Deno docs, and the talk that the
+  creator gave on his biggest regrets on Node.
 
 </Notes>
-
----
-
-
-## What does Deno do the same?
-
-- Built on v8
-- Single threaded, Event loop, Non-blocking I/O
-
 
 ---
 
@@ -57,43 +40,278 @@ import heaviest from './heaviest.png';
 
 ---
 
-## Deno does not use npm
-## Deno does not have node_modules
+## Let's talk about Node
 
-- modules referenced as URLs or file paths
+- Initially released in 2009
+- Combines v8 engine with an Event loop and non-blocking I/O
+- Designed for server-side JavaScript
+
+<Notes>
+
+  - v8 is fast
+  - Lots of concurrent connections, even in a single thread
+
+</Notes>
 
 ---
 
+## What happened?
 
-- modules referenced as URLs or file paths
+- npm
+- Proliferation of tools for client and server JS
+- Universal (Isomorphic) JavaScript
+- [Nodesplosion](https://www.thoughtworks.com/radar/platforms?blipid=202005026)
 
 <Notes>
-  Is deno_dir just a renamed `node_modules`?
+
+  - npm. Loads of packages.
+  - Easy to write, use, adopt, share. This has made JS the standard choice across the industry for web development.
+  - Isomorphic. We can write and share Client and server-side JS.
+
+</Notes>
+
+---
+
+## What does Deno do the same?
+
+- It's still just JavaScript
+- Combines v8 engine with an Event loop and non-blocking I/O
+- Supports bridging between native and JS code
+
+<Notes>
+
+  - Just JS. Aims to be as consistent w/ browser JS as possible.
+  - Similar architecture as Node. v8 Event loop, I/O, single thread.
+  - You can integrate it with faster native tools if you need to, although the process is different.
+
+</Notes>
+
+---
+
+```ts
+// hello_world.ts
+import { serve } from "https://deno.land/std@0.58.0/http/server.ts";
+
+const server = serve({ port: 8000 });
+
+for await (const request of server) {
+  request.respond({ body: "Hello World!\n" });
+}
+```
+
+```bash
+$ deno run --allow-net ./hello_world.ts
+```
+
+<Notes>
+
+  - Similar to how it was.
+  - There's a few things that maybe an eagle-eyed dev can pick up in this example.
+  - Let's go through them.
+
+</Notes>
+
+---
+
+## What's different?
+
+---
+
+## Deno does not use npm
+
+- Deno is not backwards-compatible with Node
+
+> If you made Deno backwards-compatible, you'd just re-build Node
+
+<Notes>
+
+  - You cannot expect any package on npm to still work.
+  - Also, npm is, well, a privately-controlled repository that exerts a huge influence on the Open-Source ecosystem.
+  - Watch a talk I'll link you to by CJ, the former NPM CTO.
+  - Also, left-pad lol
+
 </Notes>
 
 ---
 
 ## Deno does not use package.json
 
-- Y tho
+### Q: Why?
+
+<Notes>
+
+- Ryan Dahl views it as a mistake
+- I don't quite _get_ or agree with all the decisions... but let's go through his arguments
+
+</Notes>
+
+---
+
+## Deno does not use package.json
+
+### Answer 1: Ambiguity and indirection
+
+```js
+// A file executed in Node.js
+require('mymodule')  // Where is 'mymodule'?
+```
+
+```json
+// package.json
+{
+  "dependencies": {
+    "mymodule": "^3.1.4"
+  }
+}
+```
+
+<Notes>
+
+- Ryan Dahl views it as a mistake
+- `require()` syntax uses it for module resolution, so it's built in to Node.js.
+- `require('mymodule')` is not specific. Need to know where it could come from.
+- Need to know `{"dependencies": {"mymodule": "^0.0.1"}}` too.
+
+</Notes>
+
+---
+
+## Deno does not use package.json
+
+### Instead, all external code is imported by URL
+
+```js
+import * as log from "https://deno.land/std/log/mod.ts";
+import liltest from "https://unpkg.com/liltest@0.0.5/dist/liltest.js";
+```
+
+---
+
+## Deno does not use package.json
+
+### Common pattern: export files from `./deps.ts`
+```ts
+// deps.ts
+export {
+  assert,
+  assertEquals,
+  assertStrContains,
+} from "https://deno.land/std/testing/asserts.ts";
+```
+
+---
+
+## Deno does not use package.json
+
+### Answer 2: Boilerplate
+
+- Many extra fields, `license`, `repository`, `description`, etc.
+- Just need `dependencies`.
+
+<Notes>
+
+  Can be helpful, but really, we just need `dependencies`
+
+</Notes>
+
+---
+
+## Deno does not use package.json
+
+### Answer 3: Divergence from browser behaviour
+
+- Cements the idea of a module as a directory of files
+- In the browser, JS can only be imported as single files
+
+<Notes>
+
+  - Ryan Dahl believes that this is an unnecessary divergence from browser behaviour
+  - Keep it like Browser.
+
+</Notes>
+
+---
+
+## Instead of `node_modules` you have `$DENO_DIR`
+
+<img src={heaviest} />
+
+---
+
+## Instead of `node_modules` you have `$DENO_DIR`
+
+```bash
+$ du -h -d0 */node_modules
+532M	blossom/node_modules
+814M	bubbles/node_modules
+448M	fuzzylumpkins/node_modules
+707M	him/node_modules
+653M	mojo-jojo/node_modules
+377M	morbucks/node_modules
+326M	utonium/node_modules
+```
+
+---
+
+## Instead of `node_modules` you have `$DENO_DIR`
+
+### Pull files once, cache by default
+
+```bash
+# Download the dependencies.
+> DENO_DIR=./deno_dir deno cache src/deps.ts
+
+# Make sure the variable is set for any command which invokes the cache
+> DENO_DIR=./deno_dir deno test src
+
+# Check the directory into source control.
+> git add -u deno_dir
+> git commit
+```
+
+<Notes>
+
+  - What?! Who source-controls a modules directory?
+  - Well, there's a school-of-thought that if you're pulling your deps in at production time, you're doing it wrong.
+  - I mean, for Docker prod images, we bundle these in.
+  - It's certainly more secure.
+  - Is deno_dir just a renamed `node_modules`?
+
+</Notes>
 
 ---
 
 ## All async actions in Deno return a promise
-- No more cb hell. Thus Deno provides different APIs than Node.
 
----
+- No more callback hell 🎉
+- Top-level await
 
-## Deno is secure by default
-- Requires explicit permissions for file, network, and environment access.
+```ts
+import { serve } from "https://deno.land/std@0.58.0/http/server.ts";
 
----
+const server = serve({ port: 8000 });
 
-## All modules are imported by URLs
-
-```js
-import * as log from "https://deno.land/std/log/mod.ts";
+for await (const request of server) {
+  request.respond({ body: "Hello World!\n" });
+}
 ```
+
+---
+
+## No more Gyp
+
+- C++ and Rust bindings
+- Simplified interface for interacting with native code
+
+<Notes>
+
+  - All system calls are done by message passing
+    - A single entrypoint in and out of the VM
+    - protobuf serialization
+    - Two fns: send and recv.
+  - I'll admit this is a bit out of my experience, but hey, the less need to write C++ the better.
+
+</Notes>
 
 ---
 
@@ -115,21 +333,68 @@ $ deno run -c tsconfig.json mod.ts
 
 ---
 
+## Deno is secure by default
+
+- Requires explicit permissions for file, network, and environment access.
+
+```bash
+> deno run --allow-net hello_world.ts
+```
+
+```bash
+> deno run --allow-read=/usr https://deno.land/std/examples/cat.ts /etc/passwd
+  error: Uncaught PermissionDenied: read access to "/etc/passwd",
+    run again with the --allow-read flag
+```
+
+---
+
+## Deno is explicit by default
+
+- File extensions necessary in imports
+- No `index.js` shortcuts
+- Config needs to be specified to be used, e.g. permissions, TypeScript configuration, etc
+
+---
+
+## Curated, carefully-managed standard libraries
+
+https://deno.land/std
+
+---
+
 ## Other nice things
 
-- Single executable.
-- Top-level await.
-- Always dies on uncaught errors.
-- Uses ES Modules and does not support require()
+- Deno is a single executable
+- Always dies on uncaught errors
+- Uses ES Modules everywhere - no more `require()`
 
+<Note>
 
--------
+  - Also, `window` for global.
+  - It was and is a dumb name, but `global` in Node was a bad choice because we now don't have browser-compatibilty.
 
-## Let's talk about vendoring
+</Note>
 
-----
+--------
 
-# Node.js approach:
-- Source-control specification for dependencies
-- Let the build tool `npm` resolve them
--
+## Ideas for script projects
+
+1. Git commit template switcher
+1. Strip `.only` calls in tests
+
+## Ideas for server projects
+
+1. Shame bell?
+1. `¯\_(ツ)_/¯`
+
+---------
+
+## Things to watch
+
+- "10 things I regret about Node.js" by Ryan Dahl https://www.youtube.com/watch?v=M3BM9TB-8yA
+- "The Economics of Open Source" by CJ Silverio https://www.youtube.com/watch?v=MO8hZlgK5zc
+
+---------
+
+## 🍻
