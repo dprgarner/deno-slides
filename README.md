@@ -21,3 +21,4 @@ To turn on speaker notes: `Option + P`.
 - Deno: https://deno.land/
 - Deno Manual: https://deno.land/manual
 - 10 Things I regret about Node.js: https://www.youtube.com/watch?v=M3BM9TB-8yA
+- Udemy course on learning Deno: https://www.udemy.com/course/deno-the-complete-guide-zero-to-mastery/
