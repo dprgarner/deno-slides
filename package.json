@@ -6,9 +6,7 @@
   "author": "David Garner",
   "license": "MIT",
   "scripts": {
-    "start": "mdx-deck slides.mdx",
-    "build": "mdx-deck build slides.mdx",
-    "deploy": "gh-pages -d public"
+    "start": "mdx-deck slides.mdx"
   },
   "dependencies": {
     "@mdx-deck/themes": "^4.1.0",
